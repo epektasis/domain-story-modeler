@@ -76,6 +76,22 @@ module.exports = function(grunt) {
           }
         ]
       },
+      electron: {
+        files: [
+          {
+            expand: true,
+            cwd: 'app/',
+            src: ['main.js'],
+            dest: 'dist'
+          },
+          {
+            expand: true,
+            cwd: '.',
+            src: ['package.json'],
+            dest: 'dist'
+          }
+        ]
+      },
     },
     watch: {
       options: {

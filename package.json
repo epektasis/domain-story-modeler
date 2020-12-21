@@ -2,6 +2,7 @@
   "name": "domain-story-modeler",
   "version": "1.2.0-dev",
   "description": "A tool to visualize Domain Stories in the browser",
+  "main": "main.js",
   "repository": {
     "type": "git",
     "url": "https://github.com/wps/domain-story-modeler.git"
@@ -12,7 +13,13 @@
     "test": "karma start",
     "bundle": "grunt build",
     "dev": "grunt auto-build",
-    "all": "run-s lint test bundle"
+    "all": "run-s lint test bundle",
+    "estart": "electron-forge start -p dist",
+    "start": "run-s bundle estart",
+    "epackage": "electron-forge package dist",
+    "package": "run-s bundle epackage",
+    "emake": "electron-forge make dist",
+    "make": "run-s bundle emake"
   },
   "keywords": [
     "domain storytelling",
@@ -35,9 +42,15 @@
   "devDependencies": {
     "@babel/core": "7.7.2",
     "@babel/preset-env": "7.7.1",
+    "@electron-forge/cli": "^6.0.0-beta.54",
+    "@electron-forge/maker-deb": "^6.0.0-beta.54",
+    "@electron-forge/maker-rpm": "^6.0.0-beta.54",
+    "@electron-forge/maker-squirrel": "^6.0.0-beta.54",
+    "@electron-forge/maker-zip": "^6.0.0-beta.54",
     "babelify": "^10.0.0",
     "browserify": "^16.5.1",
     "chai": "^4.2.0",
+    "electron": "11.1.0",
     "eslint": "^6.8.0",
     "eslint-plugin-bpmn-io": "^0.10.0",
     "grunt": "^1.1.0",
@@ -67,6 +80,7 @@
     "bpmn-js": "^6.4.0",
     "diagram-js": "6.4.1",
     "diagram-js-direct-editing": "^1.6.1",
+    "electron-squirrel-startup": "^1.0.0",
     "inherits": "2.0.4",
     "jquery": "^3.4.1",
     "min-dash": "^3.5.2",
@@ -86,5 +100,32 @@
         }
       ]
     ]
+  },
+  "config": {
+    "forge": {
+      "packagerConfig": {},
+      "makers": [
+        {
+          "name": "@electron-forge/maker-squirrel",
+          "config": {
+            "name": "domain_story_modeler"
+          }
+        },
+        {
+          "name": "@electron-forge/maker-zip",
+          "platforms": [
+            "darwin"
+          ]
+        },
+        {
+          "name": "@electron-forge/maker-deb",
+          "config": {}
+        },
+        {
+          "name": "@electron-forge/maker-rpm",
+          "config": {}
+        }
+      ]
+    }
   }
 }
