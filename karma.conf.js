@@ -1,16 +1,7 @@
 // configures browsers to run test against
 // any of [ 'ChromeHeadless', 'Chrome', 'Firefox', 'IE', 'PhantomJS' ]
-var browsers = (process.env.TEST_BROWSERS || 'Firefox')
-  .replace(/^\s+|\s+$/, '')
-  .split(/\s*,\s*/g)
-  .map(function(browser) {
-    if (browser === 'FirefoxHeadless') {
-      process.env.FIREFOX_BIN = require('puppeteer').executablePath();
+var browsers = ['ChromeHeadless'];
 
-    } else {
-      return browser;
-    }
-  });
 
 module.exports = function(karma) {
   karma.set({
@@ -21,7 +12,7 @@ module.exports = function(karma) {
     reporters: ['spec'],
 
     preprocessors: {
-      'test/spec/**/*Spec.js': ['browserify']
+      'test/spec/**/*Spec.js': ['browserify'],
     },
 
     browsers: browsers,

@@ -85,6 +85,13 @@ export function setTitleInputLast(title) {
   titleInputLast = title;
 }
 
+const { ipcRenderer } = window.require('electron');
+
+const fs = window.require('fs');
+
+const path = window.require('path');
+
+
 export function initImports(
     elementRegistry,
     version,
@@ -92,6 +99,29 @@ export function initImports(
     eventBus,
     fnDebounce
 ) {
+  const now = new Date(Date.now());
+  console.log('initing imports ' + now.toISOString());
+  ipcRenderer.on('file', (ev, filepath) => {
+    console.log('fileevent received', filepath);
+    fs.readFile(filepath, (error, data) => {
+      const p = path.parse(filepath);
+
+      const blob = new Blob([data]);
+      console.log(p);
+      if (p.ext === '.dst') {
+        importDST(blob, p.base, version, modeler);
+      }
+
+      eventBus.fire('commandStack.changed', debounce(fnDebounce, 500));
+
+      titleInputLast = titleInput.value;
+
+    });
+
+  });
+
+
+
   document.getElementById('import').onchange = function() {
     initElementRegistry(elementRegistry);
     const filename = document.getElementById('import').files[0].name;
@@ -106,6 +136,10 @@ export function initImports(
 
     titleInputLast = titleInput.value;
   };
+
+
+
+
 
   document.getElementById('importIcon').onchange = function() {
     const inputIcon = document.getElementById('importIcon').files[0];
@@ -123,6 +157,8 @@ export function initImports(
   document.getElementById('importConfig').onchange = function() {
     importConfiguration(document.getElementById('importConfig').files[0]);
   };
+
+  ipcRenderer.send('importers-ready');
 }
 
 export function loadPersistedDST(modeler) {

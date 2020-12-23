@@ -93,6 +93,12 @@ module.exports = function(grunt) {
         ]
       },
     },
+    symlink: {
+      explicit: {
+        src: 'node_modules',
+        dest: 'dist/node_modules'
+      }
+    },
     watch: {
       options: {
         livereload: true
@@ -122,8 +128,11 @@ module.exports = function(grunt) {
   // tasks
   grunt.loadNpmTasks('grunt-contrib-clean'); // https://github.com/gruntjs/grunt-contrib-clean
   grunt.loadNpmTasks('grunt-copy-deps'); // https://www.npmjs.com/package/grunt-copy-deps
+  grunt.loadNpmTasks('grunt-contrib-symlink');
 
-  grunt.registerTask('build', ['clean', 'copy', 'copydeps', 'browserify:app']);
+  grunt.registerTask('build', ['clean', 'copy', 'copydeps', 'symlink', 'browserify:app']);
+
+  grunt.registerTask('rebuild', ['copy', 'copydeps', 'browserify:app']);
 
   grunt.registerTask('auto-build', [
     'clean',

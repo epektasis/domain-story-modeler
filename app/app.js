@@ -1,4 +1,20 @@
 'use strict';
+console.log('FOOOOOOO');
+
+const { ipcRenderer } = window.require('electron');
+
+console.log(ipcRenderer);
+
+ipcRenderer.on('log', (event, arg) => {
+  console.log(arg);
+});
+
+ipcRenderer.on('asynchronous-reply', (event, arg) => {
+  console.log(arg); // prints "pong"
+});
+
+ipcRenderer.send('asynchronous-message', 'ping');
+
 
 import './domain-story-modeler/util/MathExtensions';
 import './domain-story-modeler/util/ArrayExtensions';
@@ -81,6 +97,8 @@ const modeler = new DomainStoryModeler({
     }
   ]
 });
+
+
 
 const canvas = modeler.get('canvas');
 const elementRegistry = modeler.get('elementRegistry');
@@ -573,6 +591,8 @@ resetIconCustomizationButton.addEventListener('click', function() {
 exportConfigurationButton.addEventListener('click', function() {
   exportConfiguration();
 });
+
+
 
 // -----
 

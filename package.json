@@ -12,14 +12,16 @@
     "auto-test": "npm test -- --auto-watch --no-single-run",
     "test": "karma start",
     "bundle": "grunt build",
+    "rebundle": "grunt rebuild",
     "dev": "grunt auto-build",
     "all": "run-s lint test bundle",
     "estart": "electron-forge start -p dist",
     "start": "run-s bundle estart",
     "epackage": "electron-forge package dist",
     "package": "run-s bundle epackage",
+    "repackage": "run-s rebundle epackage",
     "emake": "electron-forge make dist",
-    "make": "run-s bundle emake"
+    "make": "run-s bundle epackage emake"
   },
   "keywords": [
     "domain storytelling",
@@ -50,7 +52,7 @@
     "babelify": "^10.0.0",
     "browserify": "^16.5.1",
     "chai": "^4.2.0",
-    "electron": "11.1.0",
+    "electron": "^11.1.0",
     "eslint": "^6.8.0",
     "eslint-plugin-bpmn-io": "^0.10.0",
     "grunt": "^1.1.0",
@@ -59,11 +61,13 @@
     "grunt-contrib-clean": "^2.0.0",
     "grunt-contrib-connect": "^2.1.0",
     "grunt-contrib-copy": "^1.0.0",
+    "grunt-contrib-symlink": "^1.0.0",
     "grunt-contrib-watch": "^1.1.0",
     "grunt-copy-deps": "^1.4.0",
     "karma": "^5.2.3",
     "karma-browserify": "^7.0.0",
     "karma-chai": "^0.1.0",
+    "karma-chrome-launcher": "^3.1.0",
     "karma-firefox-launcher": "^1.3.0",
     "karma-mocha": "^2.0.1",
     "karma-spec-reporter": "^0.0.32",
@@ -83,6 +87,7 @@
     "electron-squirrel-startup": "^1.0.0",
     "inherits": "2.0.4",
     "jquery": "^3.4.1",
+    "karma-electron": "^6.3.1",
     "min-dash": "^3.5.2",
     "sinon": "^7.5.0",
     "sortablejs": "^1.10.2",
@@ -103,7 +108,20 @@
   },
   "config": {
     "forge": {
-      "packagerConfig": {},
+      "packagerConfig": {
+        "extendInfo": {
+          "CFBundleDocumentTypes": [
+            {
+              "CFBundleTypeExtensions": [
+                "dst"
+              ],
+              "CFBundleTypeRole": "Editor",
+              "CFBundleTypeName": "Domain Story",
+              "LSHandlerRank": "Default"
+            }
+          ]
+        }
+      },
       "makers": [
         {
           "name": "@electron-forge/maker-squirrel",
